@@ -55,6 +55,9 @@ const promptUser = () => {
       if (menuSelect === "Add a department") {
         addDepartment();
       }
+      if (menuSelect === "Quit") {
+        console.log("Please start app again to use.");
+      }
     });
 };
 
@@ -293,10 +296,10 @@ addDepartment = () => {
 
 // options to UPDATE
 updateRole = () => {
-  const retrieveEmployees = `SELECT * from employees`;
-  db.query(retrieveEmployees, (err, res) => {
+  const getEmployeeSql = `SELECT * from employees`;
+  db.query(getEmployeeSql, (err, result) => {
     if (err) throw err;
-    const employees = res.map(({ id, first_name, last_name }) => ({
+    const employees = result.map(({ id, first_name, last_name }) => ({
       name: first_name + " " + last_name,
       value: id,
     }));
@@ -306,18 +309,18 @@ updateRole = () => {
         {
           type: "list",
           name: "name",
-          message: "Which employee would you like to update?",
+          message: "Which employee's role would you like to update?",
           choices: employees,
         },
       ])
       .then((choice) => {
-        const emp = choice.name;
-        const params = [emp];
+        const employee = choice.name;
+        var params = [employee];
 
-        const retRole = `SELECT * FROM roles`;
-        db.query(retRole, (err, res) => {
+        const getRoleSql = `SELECT * FROM roles`;
+        db.query(getRoleSql, (err, result) => {
           if (err) throw err;
-          const roles = res.map(({ id, title }) => ({
+          const roles = result.map(({ id, title }) => ({
             name: title,
             value: id,
           }));
@@ -327,17 +330,18 @@ updateRole = () => {
               {
                 type: "list",
                 name: "role",
-                message: "What is the employee's NEW role?",
+                message: "What is the employee's new role?",
                 choices: roles,
               },
             ])
             .then((choice) => {
               const role = choice.role;
               params.push(role);
-              const update = `UPDATE employees SET role_id = ? WHERE id = ?`;
-              db.query(update, params, (err, res) => {
+              params = params.reverse();
+              const updateSql = "UPDATE employees SET role_id = ? WHERE id = ?";
+              db.query(updateSql, params, (err, result) => {
                 if (err) throw err;
-                console.log("Updated employee's role");
+                console.log("Employee role updated.");
                 viewEmployees();
               });
             });
