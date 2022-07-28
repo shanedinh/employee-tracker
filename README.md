@@ -17,3 +17,6 @@ OLD VIDEO - original
 
 NEWEST VIDEO - With ability to delete employees, departments, and roles
 <br/>https://drive.google.com/file/d/12tsFlU4yT9hKB71kdn8JU5M_ZU74cTpl/view
+
+## Screenshot
+<img width="580" alt="Screen Shot 2022-07-27 at 7 11 57 PM" src="https://user-images.githubusercontent.com/104178313/181613961-9eb3fd79-adff-44eb-939a-b3ccb94b78ad.png">
