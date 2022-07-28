@@ -366,38 +366,6 @@ toDelete = () => {
       },
     ])
     .then((choice) => {
-      if (choice.toDelete === "Employees") {
-        db.query(`SELECT * FROM employees`, (err, res) => {
-          console.table(res);
-
-          inquirer
-            .prompt([
-              {
-                type: "number",
-                name: "choiceID",
-                message:
-                  "Which employee would you like to delete? Enter ID number.",
-                validate: (addChoiceID) => {
-                  if (addChoiceID) {
-                    return true;
-                  } else {
-                    console.log("Please enter department ID number");
-                    return false;
-                  }
-                },
-              },
-            ])
-            .then((answer) => {
-              const sqlDel = `DELETE FROM employees WHERE id = ?`;
-              db.query(sqlDel, answer.choiceID, (err, res) => {
-                if (err) throw err;
-                console.log("Deleted employee");
-                viewEmployees();
-              });
-            });
-        });
-      }
-
       if (choice.toDelete === "Departments") {
         db.query(`SELECT * FROM departments`, (err, res) => {
           console.table(res);
@@ -429,52 +397,91 @@ toDelete = () => {
             });
         });
       }
+      if (choice.toDelete === "Employees") {
+        db.query(`SELECT * FROM employees`, (err, res) => {
+          console.table(res);
+
+          inquirer
+            .prompt([
+              {
+                type: "number",
+                name: "choiceID",
+                message:
+                  "Which employee would you like to delete? Enter ID number.",
+                validate: (addChoiceID) => {
+                  if (addChoiceID) {
+                    return true;
+                  } else {
+                    console.log("Please enter department ID number");
+                    return false;
+                  }
+                },
+              },
+            ])
+            .then((answer) => {
+              const sqlDel = `DELETE FROM employeees WHERE id = ?`;
+              db.query(sqlDel, answer.choiceID, (err, res) => {
+                if (err) throw err;
+                console.log("Deleted employee");
+                viewEmployees();
+              });
+            });
+        });
+      }
+      if (choice.toDelete === "Roles") {
+        db.query(`SELECT * FROM roles`, (err, res) => {
+          console.table(res);
+
+          inquirer
+            .prompt([
+              {
+                type: "number",
+                name: "choiceID",
+                message: "Which employee would you like to delete?",
+                validate: (addChoiceID) => {
+                  if (addChoiceID) {
+                    return true;
+                  } else {
+                    console.log("Please enter role ID number");
+                    return false;
+                  }
+                },
+              },
+            ])
+            .then((answer) => {
+              const sqlDel = `DELETE FROM roles WHERE id = ?`;
+              db.query(sqlDel, answer.choiceID, (err, res) => {
+                if (err) throw err;
+                viewRoles();
+              });
+            });
+        });
+      }
     });
 };
 
-// toDelete = () => {
-//   inquirer
-//     .prompt([
-//       {
-//         type: "list",
-//         name: "toDelete",
-//         message: "Which category would you like to delete from?",
-//         choices: ["Departments", "Employees", "Roles"],
-//       },
-//     ])
-//     .then((choice) => {
-//       if (choice.toDelete === "Departments") {
-//         const query = `SELECT * FROM departments`;
-//         db.query(query, (err, res) => {
-//           if (err) throw err;
-//           const depts = res.map(({ name, index }) => ({
-//             name: name,
-//             value: index,
-//           }));
+// UPDATE MANAGER
+updateMan = () => {
+  db.query(`SELECT * FROM employees`, (err, res) => {
+    console.table(res);
 
-//           inquirer
-//             .prompt([
-//               {
-//                 type: "list",
-//                 name: "nextOpt",
-//                 message: "Choose a department to delete",
-//                 choices: depts,
-//               },
-//             ])
-//             .then((res) => {
-//               const sql = `DELETE FROM departments WHERE id = ?`;
-//               const params = [req.params.deptChoice];
-//               // const dept = choice.department;
-//               // var params = [dept.id];
-//               // params.push(dept);
-
-//               db.query(sql, params, (err, result) => {
-//                 if (err) throw err;
-//                 console.log("Deleted");
-//                 viewDepartments();
-//               });
-//             });
-//         });
-//       }
-//     });
-// };
+    inquirer.prompt([
+      {
+        type: "number",
+        name: "empID",
+        message: "Please enter employee ID number to update their manager",
+        validate: (addEmpID) => {
+          if (addEmpID) {
+            return true;
+          } else {
+            console.log("Enter employee ID number to update their manager");
+            return false;
+          }
+        },
+      },
+      {
+        type: "num",
+      },
+    ]);
+  });
+};
