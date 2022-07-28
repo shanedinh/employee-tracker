@@ -77,7 +77,7 @@ viewRoles = () => {
 
 viewEmployees = () => {
   console.log("List of Current Employees");
-  const query = `SELECT employees.id, employees.first_name, employees.last_name, roles.title AS title, roles.salary AS salary, roles.department_id
+  const query = `SELECT employees.id, employees.first_name, employees.last_name, roles.title AS title, roles.salary AS salary, roles.department_id, employees.manager_id
                  FROM employees
                  LEFT JOIN roles ON employees.role_id = roles.id`;
   db.query(query, (err, res) => {

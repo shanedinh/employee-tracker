@@ -8,9 +8,9 @@ VALUES
 
 INSERT INTO roles (title, salary, department_id)
 VALUES
-    ('Graphic Designer', '999999', 1),
-    ('Content Marketing Specialist', '999999', 2),
-    ('Accountant', '999999', 3),
+    ('Graphic Designer', '70000', 1),
+    ('Content Marketing Specialist', '83000', 2),
+    ('Accountant', '90000', 3),
     ('Lawyer', '999999', 5);
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
