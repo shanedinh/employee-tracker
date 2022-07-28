@@ -10,8 +10,6 @@ A content management system (CMS), CLI, built from scratch. You can use this app
 - Run 'node index' to start app
 - Follow prompts and use app as best suits your needs
 
-## Walkthrough Link
+## Walkthrough Video Link
 
 https://drive.google.com/file/d/16qKN08LzlJ7D_OsQRWISDKw7Xk1lOZPN/view
-
-## Screenshot

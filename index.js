@@ -459,29 +459,3 @@ toDelete = () => {
       }
     });
 };
-
-// UPDATE MANAGER
-updateMan = () => {
-  db.query(`SELECT * FROM employees`, (err, res) => {
-    console.table(res);
-
-    inquirer.prompt([
-      {
-        type: "number",
-        name: "empID",
-        message: "Please enter employee ID number to update their manager",
-        validate: (addEmpID) => {
-          if (addEmpID) {
-            return true;
-          } else {
-            console.log("Enter employee ID number to update their manager");
-            return false;
-          }
-        },
-      },
-      {
-        type: "num",
-      },
-    ]);
-  });
-};
