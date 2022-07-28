@@ -27,6 +27,7 @@ const promptUser = () => {
           "Add a role",
           "Add a department",
           "Update employee role",
+          "Delete something",
           "Quit",
         ],
       },
@@ -54,6 +55,9 @@ const promptUser = () => {
       }
       if (menuSelect === "Add a department") {
         addDepartment();
+      }
+      if (menuSelect === "Delete something") {
+        toDelete();
       }
       if (menuSelect === "Quit") {
         console.log("Please start app again to use.");
@@ -339,9 +343,9 @@ updateRole = () => {
               params.push(role);
               params = params.reverse();
               const updateSql = "UPDATE employees SET role_id = ? WHERE id = ?";
-              db.query(updateSql, params, (err, result) => {
+              db.query(updateSql, params, (err, res) => {
                 if (err) throw err;
-                console.log("Employee role updated.");
+                console.log("Employee role updated");
                 viewEmployees();
               });
             });
@@ -349,3 +353,128 @@ updateRole = () => {
       });
   });
 };
+
+// option to DELETE
+toDelete = () => {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "toDelete",
+        message: "Which category would you like to delete from?",
+        choices: ["Departments", "Employees", "Roles"],
+      },
+    ])
+    .then((choice) => {
+      if (choice.toDelete === "Employees") {
+        db.query(`SELECT * FROM employees`, (err, res) => {
+          console.table(res);
+
+          inquirer
+            .prompt([
+              {
+                type: "number",
+                name: "choiceID",
+                message:
+                  "Which employee would you like to delete? Enter ID number.",
+                validate: (addChoiceID) => {
+                  if (addChoiceID) {
+                    return true;
+                  } else {
+                    console.log("Please enter department ID number");
+                    return false;
+                  }
+                },
+              },
+            ])
+            .then((answer) => {
+              const sqlDel = `DELETE FROM employees WHERE id = ?`;
+              db.query(sqlDel, answer.choiceID, (err, res) => {
+                if (err) throw err;
+                console.log("Deleted employee");
+                viewEmployees();
+              });
+            });
+        });
+      }
+
+      if (choice.toDelete === "Departments") {
+        db.query(`SELECT * FROM departments`, (err, res) => {
+          console.table(res);
+
+          inquirer
+            .prompt([
+              {
+                type: "number",
+                name: "choiceID",
+                message:
+                  "Which department would you like to delete? Enter ID Number.",
+                validate: (addChoiceID) => {
+                  if (addChoiceID) {
+                    return true;
+                  } else {
+                    console.log("Please enter department ID number");
+                    return false;
+                  }
+                },
+              },
+            ])
+            .then((answer) => {
+              const sqlDel = `DELETE FROM departments WHERE id = ?`;
+              db.query(sqlDel, answer.choiceID, (err, res) => {
+                if (err) throw err;
+                console.log("Deleted department");
+                viewDepartments();
+              });
+            });
+        });
+      }
+    });
+};
+
+// toDelete = () => {
+//   inquirer
+//     .prompt([
+//       {
+//         type: "list",
+//         name: "toDelete",
+//         message: "Which category would you like to delete from?",
+//         choices: ["Departments", "Employees", "Roles"],
+//       },
+//     ])
+//     .then((choice) => {
+//       if (choice.toDelete === "Departments") {
+//         const query = `SELECT * FROM departments`;
+//         db.query(query, (err, res) => {
+//           if (err) throw err;
+//           const depts = res.map(({ name, index }) => ({
+//             name: name,
+//             value: index,
+//           }));
+
+//           inquirer
+//             .prompt([
+//               {
+//                 type: "list",
+//                 name: "nextOpt",
+//                 message: "Choose a department to delete",
+//                 choices: depts,
+//               },
+//             ])
+//             .then((res) => {
+//               const sql = `DELETE FROM departments WHERE id = ?`;
+//               const params = [req.params.deptChoice];
+//               // const dept = choice.department;
+//               // var params = [dept.id];
+//               // params.push(dept);
+
+//               db.query(sql, params, (err, result) => {
+//                 if (err) throw err;
+//                 console.log("Deleted");
+//                 viewDepartments();
+//               });
+//             });
+//         });
+//       }
+//     });
+// };
